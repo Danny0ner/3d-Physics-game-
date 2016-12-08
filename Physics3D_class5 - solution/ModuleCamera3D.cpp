@@ -3,6 +3,10 @@
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
 
+#include "ModulePlayer.h"
+#include "PhysVehicle3D.h"
+#include "PhysBody3D.h"
+
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	CalculateViewMatrix();
@@ -38,7 +42,7 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	// Implement a debug camera with keys and mouse
+	/*// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
 	vec3 newPos(0,0,0);
@@ -95,6 +99,19 @@ update_status ModuleCamera3D::Update(float dt)
 
 		Position = Reference + Z * length(Position);
 	}
+	*/
+	temp = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin();
+
+	playerpos.Set(temp.getX(), temp.getY(), temp.getZ());
+
+	Position.x = playerpos.x - 30;
+	Reference.x = playerpos.x -30;
+	Position.y = (playerpos.y + 5);
+	Reference.y = (playerpos.y + 5);
+	Position.z = (playerpos.z);
+	Reference.z = (playerpos.z);
+
+	LookAt(playerpos);
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();

@@ -22,7 +22,7 @@ bool ModulePlayer::Start()
 
 	// Car properties ----------------------------------------
 	car.chassis_size.Set(4, 1, 4);
-	car.chassis_offset.Set(0, 1.5, 0);
+	car.chassis_offset.Set(0, 1, 0);
 	car.mass = 200.0f;
 	car.suspensionStiffness = 15.88f;
 	car.suspensionCompression = 0.83f;
@@ -39,7 +39,7 @@ bool ModulePlayer::Start()
 
 	// Don't change anything below this line ------------------
 
-	float half_width = car.chassis_size.x* 0.7f;
+	float half_width = car.chassis_size.x* 0.5f;
 	float half_length = car.chassis_size.z*0.5f;
 	
 	vec3 direction(0,-1,0);
@@ -97,7 +97,7 @@ bool ModulePlayer::Start()
 	car.wheels[2].steering = false;
 	*/
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 30, 10);
+	vehicle->SetPos(0, 0, 10);
 
 
 	return true;
@@ -116,46 +116,98 @@ update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		acceleration = MAX_ACCELERATION;
 	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_REPEAT)
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 	{
-		vehicle->Push(0, 50, 0);
-		Normal += 50;
+		vehicle->Push(0, 70, 0);
+		Normal += 70;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_UP)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
-		if (Normal >1000)
-		vehicle->Push(0, - Normal/7, 0);
-		else  if (Normal >300)  vehicle->Push(0, -Normal/10, 0);
+		if (Normal > 1000)
+			vehicle->Push(0, -Normal / 7, 0);
+		else  if (Normal > 300)  vehicle->Push(0, -Normal / 10, 0);
 		else vehicle->Push(0, -Normal / 15, 0);
 		Normal = 0;
 	}
-	
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		if(turn < TURN_DEGREES)
-			turn +=  TURN_DEGREES;
+		vehicle->Push(50, 0, 0);
+		NormalStr += 50;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	{
+		//if (NormalStr >1000)
+		vehicle->Push(-NormalStr / 3, 0, 0);
+		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
+		//else vehicle->Push(-NormalStr / 15, 0, 0);
+		NormalStr = 0;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		vehicle->Push(-50, 0, 0);
+		NormalBack += 50;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+	{
+		//if (NormalStr >1000)
+		vehicle->Push(NormalBack / 3, 0, 0);
+		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
+		//else vehicle->Push(-NormalStr / 15, 0, 0);
+		NormalBack = 0;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		vehicle->Push(0, 0, 50);
+		NormalRight += 50;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+	{
+		//if (NormalStr >1000)
+		vehicle->Push(0, 0, -NormalRight / 3);
+		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
+		//else vehicle->Push(-NormalStr / 15, 0, 0);
+		NormalRight = 0;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		vehicle->Push(0, 0, -50);
+		NormalLeft += 50;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+	{
+		//if (NormalStr >1000)
+		vehicle->Push(0, 0, NormalLeft / 3);
+		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
+		//else vehicle->Push(-NormalStr / 15, 0, 0);
+		NormalLeft = 0;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		if (turn < TURN_DEGREES)
+			turn += TURN_DEGREES;
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		if(turn > -TURN_DEGREES)
+		if (turn > -TURN_DEGREES)
 			turn -= TURN_DEGREES;
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
 	}
-
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
-	vehicle->Brake(brake);
-
+	btRigidBody* bodycito;
+	bodycito = vehicle->vehicle->getRigidBody();
+	bodycito->applyTorque({ 0, 50,0});
 	vehicle->Render();
 
 	char title[80];

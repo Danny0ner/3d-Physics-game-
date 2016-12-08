@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "Bullet/include/btBulletDynamicsCommon.h"
 
 class ModuleCamera3D : public Module
 {
@@ -25,7 +26,8 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
-
+	btVector3 temp;
+	vec3 playerpos;
 private:
 
 	mat4x4 ViewMatrix, ViewMatrixInverse;

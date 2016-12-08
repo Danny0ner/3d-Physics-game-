@@ -21,6 +21,10 @@ public:
 
 public:
 	int Normal = 0;
+	int NormalStr = 0;
+	int NormalLeft = 0;
+	int NormalRight = 0;
+	int NormalBack = 0;
 	float matrix[12];
 	PhysVehicle3D* vehicle;
 	float turn;
