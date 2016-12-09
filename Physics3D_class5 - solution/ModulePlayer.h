@@ -4,7 +4,13 @@
 #include "p2Point.h"
 
 struct PhysVehicle3D;
-
+enum lastdir {
+	nothing,
+	Forward,
+	Backward,
+	Left,
+	Right,
+};
 #define MAX_ACCELERATION 50000.0f
 #define TURN_DEGREES 15.0f * DEGTORAD
 #define BRAKE_POWER 1000.0f
@@ -25,7 +31,11 @@ public:
 	int NormalLeft = 0;
 	int NormalRight = 0;
 	int NormalBack = 0;
+
+	btScalar LeftRotation = 0;
+	btScalar RightRotation = 0;
 	float matrix[12];
+	lastdir lastdirec = nothing;
 	PhysVehicle3D* vehicle;
 	float turn;
 	float acceleration;

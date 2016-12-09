@@ -100,14 +100,16 @@ update_status ModuleCamera3D::Update(float dt)
 		Position = Reference + Z * length(Position);
 	}
 	*/
+	
+	//temp = App->player->vehicle->vehicle->getChassisWorldTransform().getRotation();
 	temp = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin();
 
 	playerpos.Set(temp.getX(), temp.getY(), temp.getZ());
 
-	Position.x = playerpos.x - 30;
-	Reference.x = playerpos.x -30;
-	Position.y = (playerpos.y + 5);
-	Reference.y = (playerpos.y + 5);
+	Position.x = playerpos.x - 15;
+	Reference.x = playerpos.x -15;
+	Position.y = (playerpos.y + 15);
+	Reference.y = (playerpos.y + 15);
 	Position.z = (playerpos.z);
 	Reference.z = (playerpos.z);
 

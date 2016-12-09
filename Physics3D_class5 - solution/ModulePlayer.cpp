@@ -114,6 +114,8 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
+	btRigidBody* bodycito;
+	bodycito = vehicle->vehicle->getRigidBody();
 	turn = acceleration = brake = 0.0f;
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -133,16 +135,19 @@ update_status ModulePlayer::Update(float dt)
 		else  if (Normal > 300)  vehicle->Push(0, -Normal / 10, 0);
 		else vehicle->Push(0, -Normal / 15, 0);
 		Normal = 0;
+		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		vehicle->Push(50, 0, 0);
 		NormalStr += 50;
+		lastdirec = Forward;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
 	{
-		//if (NormalStr >1000)
+		if (NormalStr >2000) vehicle->Push(-NormalStr / 2, 0, 0);
+		else
 		vehicle->Push(-NormalStr / 3, 0, 0);
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
@@ -152,6 +157,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		vehicle->Push(-50, 0, 0);
 		NormalBack += 50;
+		lastdirec = Backward;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 	{
@@ -161,10 +167,16 @@ update_status ModulePlayer::Update(float dt)
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalBack = 0;
 	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	{
+		bodycito->applyTorque({ 1000,0,0 });
+	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		vehicle->Push(0, 0, 50);
 		NormalRight += 50;
+		lastdirec = Right;
+
 	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 	{
@@ -173,11 +185,17 @@ update_status ModulePlayer::Update(float dt)
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalRight = 0;
+		bodycito->applyTorque({ -1000,0,0 });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	{
+		bodycito->applyTorque({ -1000,0,0});
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		vehicle->Push(0, 0, -50);
 		NormalLeft += 50;
+		lastdirec = Left;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 	{
@@ -186,6 +204,7 @@ update_status ModulePlayer::Update(float dt)
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalLeft = 0;
+		bodycito->applyTorque({ 1000,0,0 });
 	}
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
@@ -203,11 +222,48 @@ update_status ModulePlayer::Update(float dt)
 	{
 		brake = BRAKE_POWER;
 	}
+	switch (lastdirec) {
+	case nothing: 
+		break;
+	case Forward:
+		vehicle->Push(-5, 0, 0);
+		break;
+	case Backward:
+		vehicle->Push(5, 0, 0);
+		break;
+	case Left:
+		vehicle->Push(0, 0, 5);
+		break;
+	case Right:
+		vehicle->Push(0, 0, -5);
+		break;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		bodycito->applyTorque({ 0,1000,0});
+		LeftRotation += 1000;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+	{
+		bodycito->applyTorque({ 0,-LeftRotation,0 });
+		LeftRotation = 0;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		bodycito->applyTorque({ 0,-1000,0 });
+		RightRotation += 1000;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+	{
+		bodycito->applyTorque({ 0,RightRotation,0 });
+		RightRotation = 0;
+	}
+
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
-	btRigidBody* bodycito;
-	bodycito = vehicle->vehicle->getRigidBody();
-	bodycito->applyTorque({ 0, 50,0});
+
+	if (vehicle->GetKmh() == 0) lastdirec = nothing;
 	vehicle->Render();
 
 	char title[80];
