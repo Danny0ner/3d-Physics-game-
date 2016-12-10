@@ -3,7 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
-
+struct PhysVehicle3D;
 class ModuleCamera3D : public Module
 {
 public:
@@ -28,6 +28,12 @@ public:
 	vec3 X, Y, Z, Position, Reference;
 	btVector3 temp;
 	vec3 playerpos;
+	PhysVehicle3D*	Target;
+	vec3			CameraLocation;
+	vec3			ViewVector;
+	int				camera_dist;
+	vec3			VehicleLocation;
+	uint			camera_fx;
 private:
 
 	mat4x4 ViewMatrix, ViewMatrixInverse;

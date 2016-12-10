@@ -117,6 +117,12 @@ update_status ModulePlayer::Update(float dt)
 	btRigidBody* bodycito;
 	bodycito = vehicle->vehicle->getRigidBody();
 	turn = acceleration = brake = 0.0f;
+	mat4x4 trans;
+	this->vehicle->GetTransform(&trans);
+	vec3 PushVectorFront;
+	vec3 PushVectorLeft;
+	vec3 PushVectorRight;
+	vec3 PushVectorBack;
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
@@ -140,121 +146,127 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		vehicle->Push(50, 0, 0);
+		
+		vec3 WorldPush(50, 0, 0);
+		PushVectorFront.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
+		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
+		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
+		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+	//vehicle->Push(50, 0, 0);
 		NormalStr += 50;
 		lastdirec = Forward;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
 	{
-		if (NormalStr >2000) vehicle->Push(-NormalStr / 2, 0, 0);
+		if (NormalStr >2000) vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
 		else
-		vehicle->Push(-NormalStr / 3, 0, 0);
+		vehicle->Push(-PushVectorFront.x, -PushVectorFront.y,  PushVectorFront.z);
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalStr = 0;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		vehicle->Push(-50, 0, 0);
+		vec3 WorldPush(-50, 0, 0);
+		PushVectorFront.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
+		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
+		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
+		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+		//vehicle->Push(-50, 0, 0);
 		NormalBack += 50;
 		lastdirec = Backward;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 	{
 		//if (NormalStr >1000)
-		vehicle->Push(NormalBack / 3, 0, 0);
+		vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalBack = 0;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 	{
-		bodycito->applyTorque({ 1000,0,0 });
+		//bodycito->applyTorque({ 1000,0,0 });
 	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		vehicle->Push(0, 0, 50);
+		vec3 WorldPush(0, 0, 50);
+		PushVectorFront.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
+		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
+		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
+		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+		//vehicle->Push(0, 0, 50);
 		NormalRight += 50;
 		lastdirec = Right;
 
 	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-	{
-		//if (NormalStr >1000)
-		vehicle->Push(0, 0, -NormalRight / 3);
-		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
-		//else vehicle->Push(-NormalStr / 15, 0, 0);
-		NormalRight = 0;
-		bodycito->applyTorque({ -1000,0,0 });
-	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
-	{
-		bodycito->applyTorque({ -1000,0,0});
-	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		vehicle->Push(0, 0, -50);
-		NormalLeft += 50;
-		lastdirec = Left;
-	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 	{
 		//if (NormalStr >1000)
-		vehicle->Push(0, 0, NormalLeft / 3);
+		vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
+		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
+		//else vehicle->Push(-NormalStr / 15, 0, 0);
+		NormalRight = 0;
+		//bodycito->applyTorque({ -1000,0,0 });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	{
+		//bodycito->applyTorque({ -1000,0,0});
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		vec3 WorldPush(0, 0, -50);
+		PushVectorFront.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
+		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
+		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
+		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+		//vehicle->Push(0, 0, -50);
+		NormalLeft += 50;
+		lastdirec = Left;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+	{
+		//if (NormalStr >1000)
+		vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalLeft = 0;
-		bodycito->applyTorque({ 1000,0,0 });
-	}
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		if (turn < TURN_DEGREES)
-			turn += TURN_DEGREES;
+		//bodycito->applyTorque({ 1000,0,0 });
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		if (turn > -TURN_DEGREES)
-			turn -= TURN_DEGREES;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	{
-		brake = BRAKE_POWER;
-	}
 	switch (lastdirec) {
 	case nothing: 
 		break;
 	case Forward:
-		vehicle->Push(-5, 0, 0);
+		vehicle->Push(-13, 0, 0);
 		break;
 	case Backward:
-		vehicle->Push(5, 0, 0);
+		vehicle->Push(13, 0, 0);
 		break;
 	case Left:
-		vehicle->Push(0, 0, 5);
+		vehicle->Push(0, 0, -13);
 		break;
 	case Right:
-		vehicle->Push(0, 0, -5);
+		vehicle->Push(0, 0, 13);
 		break;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
 		bodycito->applyTorque({ 0,1000,0});
 		LeftRotation += 1000;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 	{
 		bodycito->applyTorque({ 0,-LeftRotation,0 });
 		LeftRotation = 0;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
 		bodycito->applyTorque({ 0,-1000,0 });
 		RightRotation += 1000;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 	{
 		bodycito->applyTorque({ 0,RightRotation,0 });
 		RightRotation = 0;
@@ -263,7 +275,7 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 
-	if (vehicle->GetKmh() == 0) lastdirec = nothing;
+	if (vehicle->GetKmh() < 10 && vehicle->GetKmh() > -10) lastdirec = nothing;
 	vehicle->Render();
 
 	char title[80];
