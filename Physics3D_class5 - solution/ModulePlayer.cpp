@@ -45,8 +45,13 @@ bool ModulePlayer::Start()
 	vec3 direction(0,1,0);
 	vec3 axis(-1,0,0);
 	
+	
+	
+	
+	
 	car.num_wheels = 0;
 	car.wheels = new Wheel[0];
+	
 	/*
 	// FRONT-LEFT ------------------------
 	car.wheels[0].connection.Set(half_width + 1, connection_height , half_length*2);
@@ -99,6 +104,25 @@ bool ModulePlayer::Start()
 	*/
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 0, 10);
+
+	/////////////////////////// helices//////////////////
+	c1.height = 0.1;
+	c1.radius = 1;
+	c2.height = 0.1;
+	c2.radius = 1;
+	c3.height = 0.1;
+	c3.radius = 1;
+	c4.height = 0.1;
+	c4.radius = 1;
+	c1.color = Red;
+
+	btVector3 helix(0, -1, 0);
+	btVector3 helix2(0, 2, 0);
+	btVector3 helix3(0, 1, 0);
+	cc1 = App->physics->AddBody(c1, 1);
+	
+	App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *cc1->GetRigidBody(), helix2,helix,helix3, helix3, false);
+
 
 	return true;
 }

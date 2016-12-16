@@ -13,13 +13,14 @@ ModuleSceneIntro::~ModuleSceneIntro()
 
 // Load assets
 bool ModuleSceneIntro::Start()
+
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
-
 	return ret;
 }
 
@@ -38,6 +39,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	p.axis = true;
 	p.Render();
 
+	Cylinder c1(1, 0.1);
+	c1.SetRotation(90, { 0,0,1 });
+	c1.Render();
+	
 	return UPDATE_CONTINUE;
 }
 

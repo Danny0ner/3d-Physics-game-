@@ -40,4 +40,17 @@ public:
 	float turn;
 	float acceleration;
 	float brake;
+
+	Cylinder c1;
+	Cylinder c2;
+	Cylinder c3;
+	Cylinder c4;
+
+	PhysBody3D* cc1;
+	PhysBody3D* cc2;
+	PhysBody3D* cc3;
+	PhysBody3D* cc4;
+
+
+
 };
