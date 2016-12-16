@@ -27,10 +27,10 @@ bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
-	/*Target = App->player->vehicle;
-	CameraLocation = vec3(0.0f, 15.0f, 0.0f);
+	Target = App->player->vehicle;
+	CameraLocation = vec3(0.0f, 7.0f, 0.0f);
 	ViewVector = vec3(0.0f, 10.05f, 0.0f);
-	camera_dist = 27;*/
+	camera_dist = 27;
 	return ret;
 }
 
@@ -45,7 +45,8 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	/*// Implement a debug camera with keys and mouse
+	/*
+	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
 	vec3 newPos(0,0,0);
@@ -103,32 +104,20 @@ update_status ModuleCamera3D::Update(float dt)
 		Position = Reference + Z * length(Position);
 	}
 	*/
-	
-	//temp = App->player->vehicle->vehicle->getChassisWorldTransform().getRotation();
-	temp = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin();
-
-	playerpos.Set(temp.getX(), temp.getY(), temp.getZ());
-
-	Position.x = playerpos.x - 15;
-	Reference.x = playerpos.x -15;
-	Position.y = (playerpos.y+5);
-	Reference.y = (playerpos.y+5);
-	Position.z = (playerpos.z);
-	Reference.z = (playerpos.z);
-
-	LookAt(playerpos);
-	/*
 	mat4x4 vehicle_array;
-	Target->GetTransform(&vehicle_array);
+	
+	App->player->vehicle->GetTransform(&vehicle_array);
 
+	
 	X = vec3(vehicle_array[0], vehicle_array[1], vehicle_array[2]);
 	Y = vec3(vehicle_array[4], vehicle_array[5], vehicle_array[6]);
 	Z = vec3(vehicle_array[8], vehicle_array[9], vehicle_array[10]);
 
+
 	VehicleLocation = vehicle_array.translation();
 
-	App->camera->Look((CameraLocation + VehicleLocation) - Z * camera_dist, ViewVector + VehicleLocation, true);
-	// Recalculate matrix -------------*/
+
+	App->camera->Look((CameraLocation + VehicleLocation) - X * camera_dist, ViewVector + VehicleLocation, true);
 	CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;
