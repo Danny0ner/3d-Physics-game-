@@ -4,6 +4,7 @@
 #include "p2Point.h"
 
 struct PhysVehicle3D;
+struct PhysVehicle3D;
 enum lastdir {
 	nothing,
 	Forward,
@@ -11,7 +12,7 @@ enum lastdir {
 	Left,
 	Right,
 };
-#define MAX_ACCELERATION 50000.0f
+#define MAX_ACCELERATION 0.0f
 #define TURN_DEGREES 15.0f * DEGTORAD
 #define BRAKE_POWER 1000.0f
 
@@ -50,7 +51,4 @@ public:
 	PhysBody3D* cc2;
 	PhysBody3D* cc3;
 	PhysBody3D* cc4;
-
-
-
 };

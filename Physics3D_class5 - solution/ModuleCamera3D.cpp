@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
-
 #include "ModulePlayer.h"
 #include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
@@ -45,14 +44,13 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	/*
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-
+	/*
 	vec3 newPos(0,0,0);
-	float speed = 5.0f * dt;
+	float speed = 3.0f * dt;
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 12.0f * dt;
+		speed = 8.0f * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
@@ -105,10 +103,10 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	*/
 	mat4x4 vehicle_array;
-	
+
 	App->player->vehicle->GetTransform(&vehicle_array);
 
-	
+
 	X = vec3(vehicle_array[0], vehicle_array[1], vehicle_array[2]);
 	Y = vec3(vehicle_array[4], vehicle_array[5], vehicle_array[6]);
 	Z = vec3(vehicle_array[8], vehicle_array[9], vehicle_array[10]);
@@ -118,6 +116,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 
 	App->camera->Look((CameraLocation + VehicleLocation) - X * camera_dist, ViewVector + VehicleLocation, true);
+	// Recalculate matrix -------------
 	CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;

@@ -31,7 +31,7 @@ bool ModuleAudio::Init()
 	if((init & flags) != flags)
 	{
 		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
-		ret = false;
+		ret = true;
 	}
 
 	//Initialize SDL_mixer

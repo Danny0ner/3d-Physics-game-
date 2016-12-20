@@ -13,14 +13,20 @@ ModuleSceneIntro::~ModuleSceneIntro()
 
 // Load assets
 bool ModuleSceneIntro::Start()
-
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
+
+	s.size = vec3(5, 3, 1);
+	s.SetPos(0, 2.5f, 20);
+
+	sensor = App->physics->AddBody(s, 0.0f);
+	sensor->SetAsSensor(true);
+	sensor->collision_listeners.add(this);
+
 	return ret;
 }
 
@@ -39,14 +45,14 @@ update_status ModuleSceneIntro::Update(float dt)
 	p.axis = true;
 	p.Render();
 
-	Cylinder c1(1, 0.1);
-	c1.SetRotation(90, { 0,0,1 });
-	c1.Render();
-	
+	sensor->GetTransform(&s.transform);
+	s.Render();
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+	LOG("Hit!");
 }
 

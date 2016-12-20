@@ -18,6 +18,7 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
+
 	VehicleInfo car;
 
 	// Car properties ----------------------------------------
@@ -41,17 +42,17 @@ bool ModulePlayer::Start()
 
 	float half_width = car.chassis_size.x* 0.5f;
 	float half_length = car.chassis_size.z*0.5f;
-	
-	vec3 direction(0,1,0);
-	vec3 axis(-1,0,0);
-	
-	
-	
-	
-	
+
+	vec3 direction(0, 1, 0);
+	vec3 axis(-1, 0, 0);
+
+
+
+
+
 	car.num_wheels = 0;
 	car.wheels = new Wheel[0];
-	
+
 	/*
 	// FRONT-LEFT ------------------------
 	car.wheels[0].connection.Set(half_width + 1, connection_height , half_length*2);
@@ -76,7 +77,7 @@ bool ModulePlayer::Start()
 	car.wheels[1].drive = true;
 	car.wheels[1].brake = false;
 	car.wheels[1].steering = true;
-	
+
 	// REAR-LEFT ------------------------
 	car.wheels[2].connection.Set(half_width + 1, connection_height + 2, half_length -3);
 	car.wheels[2].direction = direction;
@@ -120,10 +121,7 @@ bool ModulePlayer::Start()
 	btVector3 helix2(0, 2, 0);
 	btVector3 helix3(0, 1, 0);
 	cc1 = App->physics->AddBody(c1, 1);
-	
-	App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *cc1->GetRigidBody(), helix2,helix,helix3, helix3, false);
-
-
+	App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *cc1->GetRigidBody(), helix2, helix, helix3, helix3, false);
 	return true;
 }
 
@@ -147,7 +145,8 @@ update_status ModulePlayer::Update(float dt)
 	vec3 PushVectorLeft;
 	vec3 PushVectorRight;
 	vec3 PushVectorBack;
-
+	vec3 AirFriction;
+	vec3 AirFric;
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		acceleration = MAX_ACCELERATION;
@@ -165,18 +164,18 @@ update_status ModulePlayer::Update(float dt)
 		else  if (Normal > 300)  vehicle->Push(0, -Normal / 10, 0);
 		else vehicle->Push(0, -Normal / 15, 0);
 		Normal = 0;
-		
+
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		
+
 		vec3 WorldPush(50, 0, 0);
 		PushVectorFront.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
 		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
 		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
 		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
-	//vehicle->Push(50, 0, 0);
+		//vehicle->Push(50, 0, 0);
 		NormalStr += 50;
 		lastdirec = Forward;
 	}
@@ -184,7 +183,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		if (NormalStr >2000) vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
 		else
-		vehicle->Push(-PushVectorFront.x, -PushVectorFront.y,  PushVectorFront.z);
+			vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalStr = 0;
@@ -219,9 +218,10 @@ update_status ModulePlayer::Update(float dt)
 		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
 		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
 		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+		//AirFric = (PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
 		//vehicle->Push(0, 0, 50);
 		NormalRight += 50;
-		lastdirec = Right;
+		lastdirec = Left;
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
@@ -244,9 +244,10 @@ update_status ModulePlayer::Update(float dt)
 		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
 		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
 		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+		//AirFric = (PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
 		//vehicle->Push(0, 0, -50);
 		NormalLeft += 50;
-		lastdirec = Left;
+		lastdirec = Right;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 	{
@@ -257,26 +258,44 @@ update_status ModulePlayer::Update(float dt)
 		NormalLeft = 0;
 		//bodycito->applyTorque({ 1000,0,0 });
 	}
-
+	
 	switch (lastdirec) {
-	case nothing: 
+	case nothing:
 		break;
+		
 	case Forward:
-		vehicle->Push(-13, 0, 0);
+		AirFric =( -13, 0, 0 );
+		AirFriction.x = trans[0] * AirFric.x + trans[1] * AirFric.y + trans[2] * AirFric.z;
+		AirFriction.y = trans[4] * AirFric.x + trans[5] * AirFric.y + trans[6] * AirFric.z;
+		AirFriction.z = trans[8] * AirFric.x + trans[9] * AirFric.y + trans[10] * AirFric.z;
+		vehicle->Push(AirFriction.x, AirFriction.y, -AirFriction.z);
 		break;
 	case Backward:
-		vehicle->Push(13, 0, 0);
+		AirFric = (13, 0, 0);
+		AirFriction.x = trans[0] * AirFric.x + trans[1] * AirFric.y + trans[2] * AirFric.z;
+		AirFriction.y = trans[4] * AirFric.x + trans[5] * AirFric.y + trans[6] * AirFric.z;
+		AirFriction.z = trans[8] * AirFric.x + trans[9] * AirFric.y + trans[10] * AirFric.z;
+		vehicle->Push(AirFriction.x, AirFriction.y, -AirFriction.z);
+		
 		break;
 	case Left:
-		vehicle->Push(0, 0, -13);
+		//AirFric = (0, 0, -13);
+		AirFriction.x = trans[0] * AirFric.x + trans[1] * AirFric.y + trans[2] * AirFric.z;
+		AirFriction.y = trans[4] * AirFric.x + trans[5] * AirFric.y + trans[6] * AirFric.z;
+		AirFriction.z = trans[8] * AirFric.x + trans[9] * AirFric.y + trans[10] * AirFric.z;
+		vehicle->Push(-AirFriction.x, 0, -AirFriction.z);
 		break;
 	case Right:
-		vehicle->Push(0, 0, 13);
+	
+		AirFriction.x = trans[0] * AirFric.x + trans[1] * AirFric.y + trans[2] * AirFric.z;
+		AirFriction.y = trans[4] * AirFric.x + trans[5] * AirFric.y + trans[6] * AirFric.z;
+		AirFriction.z = trans[8] * AirFric.x + trans[9] * AirFric.y + trans[10] * AirFric.z;
+		vehicle->Push(AirFriction.x, 0, -AirFriction.z);
 		break;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		bodycito->applyTorque({ 0,1000,0});
+		bodycito->applyTorque({ 0,1000,0 });
 		LeftRotation += 1000;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
@@ -295,16 +314,13 @@ update_status ModulePlayer::Update(float dt)
 		bodycito->applyTorque({ 0,RightRotation,0 });
 		RightRotation = 0;
 	}
-
-	vehicle->ApplyEngineForce(acceleration);
-	vehicle->Turn(turn);
-
 	if (vehicle->GetKmh() < 10 && vehicle->GetKmh() > -10) lastdirec = nothing;
 	vehicle->Render();
 
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
+
 
 	return UPDATE_CONTINUE;
 }
