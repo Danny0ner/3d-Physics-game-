@@ -48,6 +48,13 @@ bool ModuleSceneIntro::Start()
 	door2palo.color = White;
 	map[3] = App->physics->AddBody(door2palo, 0.0f);
 
+	door5palo.radius = 0.5f;
+	door5palo.height = 10;
+	door5palo.SetRotation(120, (0, 0, 1));
+	door5palo.SetPos(40, 5, -40);
+	door5palo.color = White;
+	map[27] = App->physics->AddBody(door5palo, 0.0f);
+
 	door4_1.radius = 0.5f;
 	door4_1.height = 8;
 	door4_1.SetRotation(120, (0, 0, 1));
@@ -107,6 +114,134 @@ bool ModuleSceneIntro::Start()
 	door6_4.SetPos(50, 13, -20);
 	map[13] = App->physics->AddBody(door6_4, 0.0f);
 
+
+	///////////////////RING 1 ///////////////
+
+	vec3 Ringbox(1, 1, 2);
+	
+	////radius////
+	ring1.size = Ringbox;
+	ring2.size = Ringbox;
+	ring3.size = Ringbox;
+	ring4.size = Ringbox;
+	ring5.size = Ringbox;
+	ring6.size = Ringbox;
+	ring7.size = Ringbox;
+	ring8.size = Ringbox;
+	ring9.size = Ringbox;
+	ring10.size = Ringbox;
+	ring11.size = Ringbox;
+	ring12.size = Ringbox;
+
+
+	
+	////Position////
+
+
+	ring1.SetPos(70, 20, 0);
+	ring2.SetPos(70, 20.6f, -2);
+	ring2.SetRotation(36, { 1,0,0 });
+	ring3.SetPos(70, 22.4f, -3.4f);
+	ring3.SetRotation(72, { 1,0,0 });
+	ring4.SetPos(70, 24.5f, -3.8f);
+	ring4.SetRotation(90, { 1,0,0 });
+	ring5.SetPos(70, 26.6, -3.4f);
+	ring5.SetRotation(116, { 1,0,0 });
+	ring6.SetPos(70, 28.2f, -2);
+	ring6.SetRotation(152, { 1,0,0 });
+	ring7.SetPos(70, 28.7, -0);
+	ring7.SetRotation(0, { 1,0,0 });
+	ring8.SetPos(70, 28.2, 2);
+	ring8.SetRotation(-152, { 1,0,0 });
+	ring9.SetPos(70, 26.6, 3.4f);
+	ring9.SetRotation(-116, { 1,0,0 });
+	ring10.SetPos(70, 24.5f, 3.8f);
+	ring10.SetRotation(90, { 1,0,0 });
+	ring11.SetPos(70, 22.4f, 3.4f);
+	ring11.SetRotation(-72, { 1,0,0 });
+	ring12.SetPos(70, 20.6f, 2);
+	ring12.SetRotation(-36, { 1,0,0 });
+
+	//////ADD RING/////
+	map[15] = App->physics->AddBody(ring1, 0.0f);
+	map[16] = App->physics->AddBody(ring2, 0.0f);
+	map[17] = App->physics->AddBody(ring3, 0.0f);
+	map[18] = App->physics->AddBody(ring4, 0.0f);
+	map[19] = App->physics->AddBody(ring5, 0.0f);
+	map[20] = App->physics->AddBody(ring6, 0.0f);
+	map[21] = App->physics->AddBody(ring7, 0.0f);
+	map[22] = App->physics->AddBody(ring8, 0.0f);
+	map[23] = App->physics->AddBody(ring9, 0.0f);
+	map[24] = App->physics->AddBody(ring10, 0.0f);
+	map[25] = App->physics->AddBody(ring11, 0.0f);
+	map[26] = App->physics->AddBody(ring12, 0.0f);
+
+
+	////////Ring 2////////
+	ring13.size = Ringbox;
+	ring14.size = Ringbox;
+	ring15.size = Ringbox;
+	ring16.size = Ringbox;
+	ring17.size = Ringbox;
+	ring18.size = Ringbox;
+	ring19.size = Ringbox;
+	ring20.size = Ringbox;
+	ring21.size = Ringbox;
+	ring22.size = Ringbox;
+	ring23.size = Ringbox;
+	ring24.size = Ringbox;
+
+
+
+	////Position////
+
+	//(70, 10, 0);
+	//(40, 5, -40);
+
+	ring13.SetPos(40, 10, -40);
+	ring14.SetPos(40, 10.6f, -42);
+	ring14.SetRotation(36, { 1,0,0 });
+	ring15.SetPos(40, 12.4f, -43.4f);
+	ring15.SetRotation(72, { 1,0,0 });
+	ring16.SetPos(40, 14.5f, -43.8f);
+	ring16.SetRotation(90, { 1,0,0 });
+	ring17.SetPos(40, 16.6, -43.4f);
+	ring17.SetRotation(116, { 1,0,0 });
+	ring18.SetPos(40, 18.2f, -42);
+	ring18.SetRotation(152, { 1,0,0 });
+	ring19.SetPos(40, 18.7, -40);
+	ring19.SetRotation(0, { 1,0,0 });
+	ring20.SetPos(40, 18.2, -38);
+	ring20.SetRotation(-152, { 1,0,0 });
+	ring21.SetPos(40, 16.6, -36.4f);
+	ring21.SetRotation(-116, { 1,0,0 });
+	ring22.SetPos(40, 14.5f, -36.0f);
+	ring22.SetRotation(90, { 1,0,0 });
+	ring23.SetPos(40, 12.4f, -36.4f);
+	ring23.SetRotation(-72, { 1,0,0 });
+	ring24.SetPos(40, 10.6f, -38);
+	ring24.SetRotation(-36, { 1,0,0 });
+
+	//////ADD RING/////
+	map[28] = App->physics->AddBody(ring13, 0.0f);
+	map[29] = App->physics->AddBody(ring14, 0.0f);
+	map[30] = App->physics->AddBody(ring15, 0.0f);
+	map[31] = App->physics->AddBody(ring16, 0.0f);
+	map[32] = App->physics->AddBody(ring17, 0.0f);
+	map[33] = App->physics->AddBody(ring18, 0.0f);
+	map[34] = App->physics->AddBody(ring19, 0.0f);
+	map[35] = App->physics->AddBody(ring20, 0.0f);
+	map[36] = App->physics->AddBody(ring21, 0.0f);
+	map[37] = App->physics->AddBody(ring22, 0.0f);
+	map[38] = App->physics->AddBody(ring23, 0.0f);
+	map[39] = App->physics->AddBody(ring24, 0.0f);
+	
+
+
+
+
+
+
 	Flooor.size = vec3(120, 0, 100);
 	Flooor.SetPos(50, 0.1f, -40);
 	map[14] = App->physics->AddBody(Flooor, 0.0f);
@@ -152,12 +287,51 @@ update_status ModuleSceneIntro::Update(float dt)
 	door1l.Render();
 	door1r.Render();
 	door2palo.Render();
+	door5palo.Render();
 	door4_1.Render();
 	door4_2.Render();
 	door4_3.Render();
 	door7_1.Render();
 	door7_2.Render();
 	door7_3.Render();
+
+
+	/////////Ring Render/////////
+	ring1.Render();
+	ring2.Render();
+	ring3.Render();
+	ring4.Render();
+	ring5.Render();
+	ring6.Render();
+	ring7.Render();
+	ring8.Render();
+	ring9.Render();
+	ring10.Render();
+	ring11.Render();
+	ring12.Render();
+
+
+	/////////Ring 2 Render /////////
+	ring13.Render();
+	ring14.Render();
+	ring15.Render();
+	ring16.Render();
+	ring17.Render();
+	ring18.Render();
+	ring19.Render();
+	ring20.Render();
+	ring21.Render();
+	ring22.Render();
+	ring23.Render();
+	ring24.Render();
+
+	////////Ring Colour //////////
+
+	
+
+
+
+
 	return UPDATE_CONTINUE;
 }
 
