@@ -21,6 +21,7 @@ public:
 	void SetAsSensor(bool is_sensor);
 	bool IsSensor() const;
 	btRigidBody* GetRigidBody();
+
 private:
 	btRigidBody* body = nullptr;
 	bool is_sensor = false;

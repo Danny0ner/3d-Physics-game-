@@ -107,21 +107,21 @@ bool ModulePlayer::Start()
 	vehicle->SetPos(0, 0, 10);
 
 	/////////////////////////// helices//////////////////
-	c1.height = 0.1;
+	c1.height = 0.01f;
 	c1.radius = 1;
-	c2.height = 0.1;
+	c2.height = 0.01f;
 	c2.radius = 1;
-	c3.height = 0.1;
+	c3.height = 0.01f;
 	c3.radius = 1;
-	c4.height = 0.1;
+	c4.height = 0.01f;
 	c4.radius = 1;
 	c1.color = Red;
 
 	btVector3 helix(0, -1, 0);
 	btVector3 helix2(0, 2, 0);
 	btVector3 helix3(0, 1, 0);
-	cc1 = App->physics->AddBody(c1, 1);
-	App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *cc1->GetRigidBody(), helix2, helix, helix3, helix3, false);
+	cc1 = App->physics->AddBody(c1, 0.1f);
+	//App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *cc1->GetRigidBody(), helix2, helix, helix3, helix3, false);
 	return true;
 }
 
@@ -191,10 +191,10 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		vec3 WorldPush(-50, 0, 0);
-		PushVectorFront.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
-		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
-		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
-		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+		PushVectorBack.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
+		PushVectorBack.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
+		PushVectorBack.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
+		vehicle->Push(PushVectorBack.x, PushVectorBack.y, -PushVectorBack.z);
 		//vehicle->Push(-50, 0, 0);
 		NormalBack += 50;
 		lastdirec = Backward;
@@ -202,7 +202,7 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 	{
 		//if (NormalStr >1000)
-		vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
+		vehicle->Push(-PushVectorBack.x, -PushVectorBack.y, PushVectorBack.z);
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalBack = 0;
@@ -214,10 +214,10 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		vec3 WorldPush(0, 0, 50);
-		PushVectorFront.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
-		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
-		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
-		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+		PushVectorLeft.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
+		PushVectorLeft.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
+		PushVectorLeft.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
+		vehicle->Push(PushVectorLeft.x, PushVectorLeft.y, -PushVectorLeft.z);
 		//AirFric = (PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
 		//vehicle->Push(0, 0, 50);
 		NormalRight += 50;
@@ -227,7 +227,7 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 	{
 		//if (NormalStr >1000)
-		vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
+		vehicle->Push(-PushVectorLeft.x, -PushVectorLeft.y, PushVectorLeft.z);
 		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
 		//else vehicle->Push(-NormalStr / 15, 0, 0);
 		NormalRight = 0;
@@ -240,23 +240,18 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		vec3 WorldPush(0, 0, -50);
-		PushVectorFront.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
-		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
-		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
-		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
+		PushVectorRight.x = trans[0] * WorldPush.x + trans[1] * WorldPush.y + trans[2] * WorldPush.z;
+		PushVectorRight.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
+		PushVectorRight.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
+		vehicle->Push(PushVectorRight.x, PushVectorRight.y, -PushVectorRight.z);
 		//AirFric = (PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
 		//vehicle->Push(0, 0, -50);
-		NormalLeft += 50;
+
 		lastdirec = Right;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 	{
-		//if (NormalStr >1000)
-		vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
-		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
-		//else vehicle->Push(-NormalStr / 15, 0, 0);
-		NormalLeft = 0;
-		//bodycito->applyTorque({ 1000,0,0 });
+		vehicle->Push(-PushVectorRight.x, -PushVectorRight.y, PushVectorRight.z);
 	}
 	
 	switch (lastdirec) {
@@ -313,6 +308,26 @@ update_status ModulePlayer::Update(float dt)
 	{
 		bodycito->applyTorque({ 0,RightRotation,0 });
 		RightRotation = 0;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		bodycito->applyTorque({0,0, 1000 });
+		FrontRotation += 1000;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+	{
+		bodycito->applyTorque({ 0,0,-FrontRotation});
+		FrontRotation = 0;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		bodycito->applyTorque({ 0,0, -1000 });
+		BackRotation += 1000;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+	{
+		bodycito->applyTorque({ 0,0,BackRotation });
+		BackRotation = 0;
 	}
 	if (vehicle->GetKmh() < 10 && vehicle->GetKmh() > -10) lastdirec = nothing;
 	vehicle->Render();

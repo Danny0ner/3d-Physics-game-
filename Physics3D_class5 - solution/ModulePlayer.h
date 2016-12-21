@@ -35,6 +35,8 @@ public:
 
 	btScalar LeftRotation = 0;
 	btScalar RightRotation = 0;
+	btScalar FrontRotation = 0;
+	btScalar BackRotation = 0;
 	float matrix[12];
 	lastdir lastdirec = nothing;
 	PhysVehicle3D* vehicle;
