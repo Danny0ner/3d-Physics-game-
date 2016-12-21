@@ -104,7 +104,7 @@ bool ModulePlayer::Start()
 
 	*/
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 0, 10);
+	vehicle->SetPos(0, 10, 0);
 
 	/////////////////////////// helices//////////////////
 	c1.height = 0.01f;
@@ -120,7 +120,7 @@ bool ModulePlayer::Start()
 	btVector3 helix(0, -1, 0);
 	btVector3 helix2(0, 2, 0);
 	btVector3 helix3(0, 1, 0);
-	cc1 = App->physics->AddBody(c1, 0.1f);
+	//cc1 = App->physics->AddBody(c1, 0.1f);
 	//App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *cc1->GetRigidBody(), helix2, helix, helix3, helix3, false);
 	return true;
 }
