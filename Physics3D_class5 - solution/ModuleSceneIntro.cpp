@@ -91,30 +91,25 @@ bool ModuleSceneIntro::Start()
 	s.size = vec3(5, 3, 1);
 	s.SetPos(0, 2.5f, 20);
 
-	door6_1.size = vec3(10, 2, 1);
-	door6_1.SetPos(60, 5, -20);
+	door6_1.size = vec3(12, 7, 1);
+	door6_1.SetPos(50, 4, -20);
 	map[10] = App->physics->AddBody(door6_1, 0.0f);
 
 	door6_2.size = vec3(2, 10, 1);
-	door6_2.SetPos(17, 9, -3);
+	door6_2.SetPos(55, 9, -20);
 	map[11] = App->physics->AddBody(door6_2, 0.0f);
 
 	door6_3.size = vec3(2, 10, 1);
-	door6_3.SetPos(20, 9, 5);
+	door6_3.SetPos(45, 9, -20);
 	map[12] = App->physics->AddBody(door6_3, 0.0f);
 
 	door6_4.size = vec3(10, 2, 1);
-	door6_4.SetPos(20, 13, 1);
+	door6_4.SetPos(50, 13, -20);
 	map[13] = App->physics->AddBody(door6_4, 0.0f);
 
-	door6_4.size = vec3(10, 2, 1);
-	door6_4.SetPos(20, 13, 1);
-	map[13] = App->physics->AddBody(door6_4, 0.0f);
-
-	door6_4.size = vec3(10, 2, 1);
-	door6_4.SetPos(20, 13, 1);
-	map[13] = App->physics->AddBody(door6_4, 0.0f);
-
+	Flooor.size = vec3(120, 0, 100);
+	Flooor.SetPos(50, 0.1f, -40);
+	map[14] = App->physics->AddBody(Flooor, 0.0f);
 	sensor1.size = vec3(1,5,5);
 	sensor1.SetPos(20, 13, 1);
 	sensoraro1 = App->physics->AddBody(sensor1, 0.0f);
@@ -148,6 +143,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	sensoraro1->GetTransform(&sensor1.transform);
 	
 	s.Render();
+	Flooor.Render();
 	door6_1.Render();
 	door6_2.Render();
 	door6_3.Render();
