@@ -31,11 +31,11 @@ bool ModulePlayer::Start()
 	car.chassis_size[4].Set(0.5f, 0.7f, 1);
 
 	car.chassis_offset = new vec3[car.num_chassis];
-	car.chassis_offset[0].Set(0, 1, 0);
-	car.chassis_offset[1].Set(1, 1, -1);
-	car.chassis_offset[2].Set(-1, 1, 1);
-	car.chassis_offset[3].Set(-1, 1, -1);
-	car.chassis_offset[4].Set(1, 1, 1);
+	car.chassis_offset[0].Set(0, 0, 0);
+	car.chassis_offset[1].Set(1, 0, -1);
+	car.chassis_offset[2].Set(-1, 0, 1);
+	car.chassis_offset[3].Set(-1, 0, -1);
+	car.chassis_offset[4].Set(1, 0, 1);
 	car.chassis_color = new vec3[car.num_chassis];
 	car.chassis_color[0] = { Blue.r, Blue.g, Blue.b };
 	car.chassis_color[1] = { Blue.r, Blue.g, Blue.b };
@@ -165,6 +165,7 @@ update_status ModulePlayer::Update(float dt)
 	vec3 PushVectorBack;
 	vec3 AirFriction;
 	vec3 AirFric;
+	btScalar frontRotx, frontRoty, frontRotz, backRotx, backRoty, backRotz;
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
@@ -314,8 +315,7 @@ update_status ModulePlayer::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 	{
-		bodycito->applyTorque({ 0,-LeftRotation,0 });
-		LeftRotation = 0;
+		bodycito->setAngularVelocity({ 0,0,0 });
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
@@ -325,28 +325,30 @@ update_status ModulePlayer::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 	{
-		bodycito->applyTorque({ 0,RightRotation,0 });
-		RightRotation = 0;
+		bodycito->setAngularVelocity({ 0,0,0 });
 	}
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
-		bodycito->applyTorque({0,0, 1000 });
+		frontRotx = trans[0] * 0 + trans[1] *0 + trans[2] * 1000;
+		frontRoty = trans[4] * 0 + trans[5] * 0 + trans[6] * 1000;
+		frontRotz = trans[8] * 0 + trans[9] * 0 + trans[10] * 1000;
+		bodycito->applyTorque({frontRotx,frontRoty, -frontRotz});
 		FrontRotation += 1000;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
 	{
-		bodycito->applyTorque({ 0,0,-FrontRotation});
-		FrontRotation = 0;
+		bodycito->setAngularVelocity({ 0,0,0 });
 	}
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		bodycito->applyTorque({ 0,0, -1000 });
-		BackRotation += 1000;
+		backRotx = trans[0] * 0 + trans[1] * 0 + trans[2] * -1000;
+		backRoty = trans[4] * 0 + trans[5] * 0 + trans[6] * -1000;
+		backRotz = trans[8] * 0 + trans[9] * 0 + trans[10] * -1000;
+		bodycito->applyTorque({ backRotx,backRoty, -backRotz });
 	}
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
-		bodycito->applyTorque({ 0,0,BackRotation });
-		BackRotation = 0;
+		bodycito->setAngularVelocity({ 0,0,0 });
 	}
 	if (vehicle->GetKmh() < 10 && vehicle->GetKmh() > -10) lastdirec = nothing;
 	vehicle->Render();
@@ -359,7 +361,7 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 	{
 		bodycito->setLinearVelocity({ 0,0,0 });
-		vehicle->SetPos(0, 1, 0);
+		vehicle->SetPos(0, 2, 0);
 	}
 
 	return UPDATE_CONTINUE;

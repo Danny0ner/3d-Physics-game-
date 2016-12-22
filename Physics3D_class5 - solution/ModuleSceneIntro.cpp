@@ -305,7 +305,10 @@ bool ModuleSceneIntro::Start()
 
 
 	victory = App->audio->LoadFx("Victory.wav");
+	musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_.wav");
 	
+	checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
+	App->audio->PlayFx(musicc, -1);
 	return ret;
 }
 
@@ -334,7 +337,12 @@ update_status ModuleSceneIntro::Update(float dt)
 	}
 	
 	if (finished == true && finished2 == false) {
-		finished2 == true;
+		finished2 = true;
+		App->audio->CleanUp();
+		App->audio->Init ();
+		victory = App->audio->LoadFx("Victory.wav");
+		musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_.wav");
+		checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
 		App->audio->PlayFx(victory);
 	}
 
@@ -342,6 +350,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 		timepassed = 0;
 		started = false;
+		finished = false;
+		finished2 = false;
 		check1 = false;
 		check2 = false;
 		check3 = false;
