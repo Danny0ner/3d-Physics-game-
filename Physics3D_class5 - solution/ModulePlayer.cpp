@@ -72,56 +72,7 @@ bool ModulePlayer::Start()
 	car.num_wheels = 0;
 	car.wheels = new Wheel[0];
 
-	/*
-	// FRONT-LEFT ------------------------
-	car.wheels[0].connection.Set(half_width + 1, connection_height , half_length*2);
-	car.wheels[0].direction = direction;
-	car.wheels[0].axis = axis;
-	car.wheels[0].suspensionRestLength = suspensionRestLength;
-	car.wheels[0].radius = wheel_radius;
-	car.wheels[0].width = wheel_width;
-	car.wheels[0].front = true;
-	car.wheels[0].drive = true;
-	car.wheels[0].brake = false;
-	car.wheels[0].steering = true;
-
-	// FRONT-RIGHT ------------------------
-	car.wheels[1].connection.Set(half_width-4, connection_height + 1, half_length +3);
-	car.wheels[1].direction = direction;
-	car.wheels[1].axis = axis;
-	car.wheels[1].suspensionRestLength = suspensionRestLength;
-	car.wheels[1].radius = wheel_radius;
-	car.wheels[1].width = wheel_width;
-	car.wheels[1].front = true;
-	car.wheels[1].drive = true;
-	car.wheels[1].brake = false;
-	car.wheels[1].steering = true;
-
-	// REAR-LEFT ------------------------
-	car.wheels[2].connection.Set(half_width + 1, connection_height + 2, half_length -3);
-	car.wheels[2].direction = direction;
-	car.wheels[2].axis = axis;
-	car.wheels[2].suspensionRestLength = suspensionRestLength;
-	car.wheels[2].radius = wheel_radius;
-	car.wheels[2].width = wheel_width;
-	car.wheels[2].front = false;
-	car.wheels[2].drive = false;
-	car.wheels[2].brake = true;
-	car.wheels[2].steering = false;
-
-	// REAR-RIGHT ------------------------
-	car.wheels[3].connection.Set(half_width-4, connection_height + 1, half_length * 2);
-	car.wheels[3].direction = direction;
-	car.wheels[3].axis = axis;
-	car.wheels[3].suspensionRestLength = suspensionRestLength;
-	car.wheels[3].radius = wheel_radius;
-	car.wheels[3].width = wheel_width;
-	car.wheels[3].front = false;
-	car.wheels[3].drive = false;
-	car.wheels[3].brake = true;
-	car.wheels[3].steering = false;
-
-	*/
+	
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 1, 0);
 
@@ -227,7 +178,7 @@ update_status ModulePlayer::Update(float dt)
 		PushVectorFront.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
 		PushVectorFront.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
 		vehicle->Push(PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
-		//vehicle->Push(50, 0, 0);
+	
 		NormalStr += 50;
 		lastdirec = Forward;
 	}
@@ -236,8 +187,7 @@ update_status ModulePlayer::Update(float dt)
 		if (NormalStr >2000) vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
 		else
 			vehicle->Push(-PushVectorFront.x, -PushVectorFront.y, PushVectorFront.z);
-		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
-		//else vehicle->Push(-NormalStr / 15, 0, 0);
+		
 		NormalStr = 0;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
@@ -247,21 +197,20 @@ update_status ModulePlayer::Update(float dt)
 		PushVectorBack.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
 		PushVectorBack.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
 		vehicle->Push(PushVectorBack.x, PushVectorBack.y, -PushVectorBack.z);
-		//vehicle->Push(-50, 0, 0);
+	
 		NormalBack += 50;
 		lastdirec = Backward;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 	{
-		//if (NormalStr >1000)
+	
 		vehicle->Push(-PushVectorBack.x, -PushVectorBack.y, PushVectorBack.z);
-		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
-		//else vehicle->Push(-NormalStr / 15, 0, 0);
+		
 		NormalBack = 0;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 	{
-		//bodycito->applyTorque({ 1000,0,0 });
+	
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
@@ -270,24 +219,22 @@ update_status ModulePlayer::Update(float dt)
 		PushVectorLeft.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
 		PushVectorLeft.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
 		vehicle->Push(PushVectorLeft.x, PushVectorLeft.y, -PushVectorLeft.z);
-		//AirFric = (PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
-		//vehicle->Push(0, 0, 50);
+		
 		NormalRight += 50;
 		lastdirec = Left;
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 	{
-		//if (NormalStr >1000)
+	
 		vehicle->Push(-PushVectorLeft.x, -PushVectorLeft.y, PushVectorLeft.z);
-		//else  if (NormalStr >300)  vehicle->Push(-NormalStr, 0, 0);
-		//else vehicle->Push(-NormalStr / 15, 0, 0);
+		
 		NormalRight = 0;
-		//bodycito->applyTorque({ -1000,0,0 });
+	
 	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
 	{
-		//bodycito->applyTorque({ -1000,0,0});
+	
 	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
@@ -296,8 +243,7 @@ update_status ModulePlayer::Update(float dt)
 		PushVectorRight.y = trans[4] * WorldPush.x + trans[5] * WorldPush.y + trans[6] * WorldPush.z;
 		PushVectorRight.z = trans[8] * WorldPush.x + trans[9] * WorldPush.y + trans[10] * WorldPush.z;
 		vehicle->Push(PushVectorRight.x, PushVectorRight.y, -PushVectorRight.z);
-		//AirFric = (PushVectorFront.x, PushVectorFront.y, -PushVectorFront.z);
-		//vehicle->Push(0, 0, -50);
+		
 
 		lastdirec = Right;
 	}
@@ -326,7 +272,7 @@ update_status ModulePlayer::Update(float dt)
 		
 		break;
 	case Left:
-		//AirFric = (0, 0, -13);
+		
 		AirFriction.x = trans[0] * AirFric.x + trans[1] * AirFric.y + trans[2] * AirFric.z;
 		AirFriction.y = trans[4] * AirFric.x + trans[5] * AirFric.y + trans[6] * AirFric.z;
 		AirFriction.z = trans[8] * AirFric.x + trans[9] * AirFric.y + trans[10] * AirFric.z;
