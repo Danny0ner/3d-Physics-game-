@@ -303,6 +303,9 @@ bool ModuleSceneIntro::Start()
 	Door7->SetAsSensor(true);
 	Door7->collision_listeners.add(this);
 
+
+	victory = App->audio->LoadFx("Victory.wav");
+	
 	return ret;
 }
 
@@ -330,6 +333,23 @@ update_status ModuleSceneIntro::Update(float dt)
 		timepassed = SDL_GetTicks() - time;
 	}
 	
+	if (finished == true && finished2 == false) {
+		finished2 == true;
+		App->audio->PlayFx(victory);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		timepassed = 0;
+		started = false;
+		check1 = false;
+		check2 = false;
+		check3 = false;
+		check4 = false;
+		check5 = false;
+		check6 = false;
+		
+	}
 	//sensor->GetTransform(&s.transform);
 	//sensor1.Render();
 	//sensor3.Render();

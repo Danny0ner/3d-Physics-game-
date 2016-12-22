@@ -22,8 +22,27 @@ bool ModulePlayer::Start()
 	VehicleInfo car;
 
 	// Car properties ----------------------------------------
-	car.chassis_size.Set(4, 1, 4);
-	car.chassis_offset.Set(0, 1, 0);
+	car.num_chassis = 5;
+	car.chassis_size = new vec3[car.num_chassis];
+	car.chassis_size[0].Set(2, 0.7f, 2);
+	car.chassis_size[1].Set(0.5f, 0.7f, 1);
+	car.chassis_size[2].Set(0.5f, 0.7f, 1);
+	car.chassis_size[3].Set(0.5f, 0.7f, 1);
+	car.chassis_size[4].Set(0.5f, 0.7f, 1);
+
+	car.chassis_offset = new vec3[car.num_chassis];
+	car.chassis_offset[0].Set(0, 1, 0);
+	car.chassis_offset[1].Set(1, 1, -1);
+	car.chassis_offset[2].Set(-1, 1, 1);
+	car.chassis_offset[3].Set(-1, 1, -1);
+	car.chassis_offset[4].Set(1, 1, 1);
+	car.chassis_color = new vec3[car.num_chassis];
+	car.chassis_color[0] = { Blue.r, Blue.g, Blue.b };
+	car.chassis_color[1] = { Blue.r, Blue.g, Blue.b };
+	car.chassis_color[2] = { Blue.r, Blue.g, Blue.b };
+	car.chassis_color[3] = { Blue.r, Blue.g, Blue.b };
+	car.chassis_color[4] = { Blue.r, Blue.g, Blue.b };
+
 	car.mass = 200.0f;
 	car.suspensionStiffness = 15.88f;
 	car.suspensionCompression = 0.83f;
@@ -40,8 +59,8 @@ bool ModulePlayer::Start()
 
 	// Don't change anything below this line ------------------
 
-	float half_width = car.chassis_size.x* 0.5f;
-	float half_length = car.chassis_size.z*0.5f;
+	float half_width = 3* 0.5f;
+	float half_length = 3*0.5f;
 
 	vec3 direction(0, 1, 0);
 	vec3 axis(-1, 0, 0);
@@ -104,7 +123,7 @@ bool ModulePlayer::Start()
 
 	*/
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 2, 0);
+	vehicle->SetPos(0, 1, 0);
 
 	/////////////////////////// helices//////////////////
 	c1.height = 0.01f;
@@ -129,7 +148,6 @@ bool ModulePlayer::Start()
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
-
 	return true;
 }
 
@@ -147,6 +165,7 @@ update_status ModulePlayer::Update(float dt)
 	vec3 PushVectorBack;
 	vec3 AirFriction;
 	vec3 AirFric;
+
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		acceleration = MAX_ACCELERATION;
@@ -332,8 +351,16 @@ update_status ModulePlayer::Update(float dt)
 	if (vehicle->GetKmh() < 10 && vehicle->GetKmh() > -10) lastdirec = nothing;
 	vehicle->Render();
 
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		bodycito->setAngularVelocity({ 0,0,0 });
+	}
 
-
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		bodycito->setLinearVelocity({ 0,0,0 });
+		vehicle->SetPos(0, 1, 0);
+	}
 
 	return UPDATE_CONTINUE;
 }

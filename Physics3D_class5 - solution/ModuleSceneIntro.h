@@ -36,8 +36,8 @@ public:
 	PhysBody3D* Door6;
 	PhysBody3D* Door7;
 	PhysBody3D* sensor;
-
+	uint victory;
 	uint time = 0, timepassed = 0;
-	bool started = false, finished = false;
+	bool started = false, finished = false, finished2 = false;
 	bool check1 = false, check2 = false, check3 = false, check4 = false, check5 = false, check6 = false;
 };

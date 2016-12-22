@@ -27,7 +27,7 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 	Target = App->player->vehicle;
-	CameraLocation = vec3(0.0f, 7.0f, 0.0f);
+	CameraLocation = vec3(0.0f, 15, 0.0f);
 	ViewVector = vec3(0.0f, 10.05f, 0.0f);
 	camera_dist = 27;
 	return ret;
