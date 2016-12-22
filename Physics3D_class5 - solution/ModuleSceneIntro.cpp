@@ -164,25 +164,27 @@ update_status ModuleSceneIntro::Update(float dt)
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1 == Door1 || body2 == Door1) {
-		door2palo.color = Red;
-		door1l.color = White;
-		door1r.color = White;
-		ring1.color.Set(255, 255, 0,1);
-		ring2.color.Set(255, 255, 0, 1);
-		ring3.color.Set(255, 255, 0, 1);
-		ring4.color.Set(255, 255, 0, 1);
-		ring5.color.Set(255, 255, 0, 1);
-		ring6.color.Set(255, 255, 0, 1);
-		ring7.color.Set(255, 255, 0, 1);
-		ring8.color.Set(255, 255, 0, 1);
-		ring9.color.Set(255, 255, 0, 1);
-		ring10.color.Set(255, 255, 0, 1);
-		ring11.color.Set(255, 255, 0, 1);
-		ring12.color.Set(255, 255, 0, 1);
-		check1 = true;
+		if (youlost == false) {
+			door2palo.color = Red;
+			door1l.color = White;
+			door1r.color = White;
+			ring1.color.Set(255, 255, 0, 1);
+			ring2.color.Set(255, 255, 0, 1);
+			ring3.color.Set(255, 255, 0, 1);
+			ring4.color.Set(255, 255, 0, 1);
+			ring5.color.Set(255, 255, 0, 1);
+			ring6.color.Set(255, 255, 0, 1);
+			ring7.color.Set(255, 255, 0, 1);
+			ring8.color.Set(255, 255, 0, 1);
+			ring9.color.Set(255, 255, 0, 1);
+			ring10.color.Set(255, 255, 0, 1);
+			ring11.color.Set(255, 255, 0, 1);
+			ring12.color.Set(255, 255, 0, 1);
+			check1 = true;
+		}
 	}
 	if (body1 == Door2 || body2 == Door2) {
-		if (check1 == true) {
+		if (check1 == true && youlost == false) {
 			door2palo.color = White;
 			ring1.color = White;
 			ring2.color = White;
@@ -203,7 +205,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		}
 	}
 	if (body1 == Door3 || body2 == Door3) {
-		if (check2 == true) {
+		if (check2 == true && youlost == false) {
 			door4_1.color = White;
 			door4_2.color = White;
 			door4_3.color = White;
@@ -224,7 +226,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		}
 	}
 	if (body1 == Door4 || body2 == Door4) {
-		if (check3 == true) {
+		if (check3 == true && youlost == false) {
 			ring13.color = White;
 			ring14.color = White;
 			ring15.color = White;
@@ -248,7 +250,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	}
 
 	if (body1 == Door5 || body2 == Door5) {
-		if (check4 == true) {
+		if (check4 == true && youlost == false) {
 			door6_1.color = White;
 			door6_2.color = White;
 			door6_3.color = White;
@@ -260,7 +262,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		}
 	}
 	if (body1 == Door6 || body2 == Door6) {
-		if (check5 == true) {
+		if (check5 == true && youlost == false) {
 			door7_1.color = White;
 			door7_2.color = White;
 			door7_3.color = White;
@@ -269,7 +271,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		}
 	}
 	if (body1 == Door7 || body2 == Door7) {
-		if (check6 == true) {
+		if (check6 == true && youlost == false) {
 			end.color = White;
 			finished = true;
 		}
@@ -641,6 +643,7 @@ void ModuleSceneIntro::Lost() {
 	wasted = App->audio->LoadFx("Wasted.wav");
 	checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
 	App->audio->PlayFx(wasted);
+	timepassed = 60000;
 	door1l.color = White;
 	door1r.color = White;
 	door2palo.color = White;
