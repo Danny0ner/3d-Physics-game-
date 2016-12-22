@@ -3,7 +3,6 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
-
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -19,6 +18,340 @@ bool ModuleSceneIntro::Start()
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
+	
+	CreateMap();
+
+	victory = App->audio->LoadFx("Victory.wav");
+	musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_1_1_.wav");
+	wasted = App->audio->LoadFx("Wasted.wav");
+	checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
+	App->audio->PlayFx(musicc, -1);
+	
+
+	return ret;
+}
+
+// Load assets
+bool ModuleSceneIntro::CleanUp()
+{
+	LOG("Unloading Intro scene");
+
+	return true;
+}
+
+// Update
+update_status ModuleSceneIntro::Update(float dt)
+{
+	Plane p(0, 1, 0, 0);
+	p.axis = true;
+	if (timepassed >= 60000) {
+		lost = true;
+		App->audio->PlayFx(wasted);
+		Lost();
+	}
+
+	if (started == false) {
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			time = SDL_GetTicks();
+			started = true;
+			start.color = White;
+			door1l.color = Red;
+			door1r.color = Red;
+		}
+	}
+	if (started == true && finished == false) {
+		timepassed = SDL_GetTicks() - time;
+	}
+	
+	if (finished == true && finished2 == false) {
+		finished2 = true;
+		App->audio->CleanUp();
+		App->audio->Init ();
+		victory = App->audio->LoadFx("Victory.wav");
+		App->audio->PlayFx(victory);
+	}
+
+	if (check1 == true && checks1 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks1 = true;
+	}
+	if (check2 == true && checks2 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks2 = true;
+	}
+	if (check3 == true && checks3 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks3 = true;
+	}
+	if (check4 == true && checks4 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks4 = true;
+	}
+	if (check5 == true && checks5 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks5 = true;
+	}
+	if (check6 == true && checks6 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks6 = true;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		Restart();
+	}
+	//sensor->GetTransform(&s.transform);
+	//sensor1.Render();
+	//sensor3.Render();
+	//sensor6.Render();
+	sensor7.Render();
+	Flooor.Render();
+	door6_1.Render();
+	door6_2.Render();
+	door6_3.Render();
+	door6_4.Render();
+	start.Render();
+	door1l.Render();
+	door1r.Render();
+	door2palo.Render();
+	door5palo.Render();
+	door4_1.Render();
+	door4_2.Render();
+	door4_3.Render();
+	door7_1.Render();
+	door7_2.Render();
+	door7_3.Render();
+	end.Render();
+
+	/////////Ring Render/////////
+	ring1.Render();
+	ring2.Render();
+	ring3.Render();
+	ring4.Render();
+	ring5.Render();
+	ring6.Render();
+	ring7.Render();
+	ring8.Render();
+	ring9.Render();
+	ring10.Render();
+	ring11.Render();
+	ring12.Render();
+
+
+	/////////Ring 2 Render /////////
+	ring13.Render();
+	ring14.Render();
+	ring15.Render();
+	ring16.Render();
+	ring17.Render();
+	ring18.Render();
+	ring19.Render();
+	ring20.Render();
+	ring21.Render();
+	ring22.Render();
+	ring23.Render();
+	ring24.Render();
+
+	////////Ring Colour //////////
+
+	
+
+
+	char title[80];
+	sprintf_s(title, "%.3f Seconds", timepassed/1000);
+	App->window->SetTitle(title);
+
+	return UPDATE_CONTINUE;
+}
+
+void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+{
+	if (body1 == Door1 || body2 == Door1) {
+		door2palo.color = Red;
+		door1l.color = White;
+		door1r.color = White;
+		ring1.color.Set(255, 255, 0,1);
+		ring2.color.Set(255, 255, 0, 1);
+		ring3.color.Set(255, 255, 0, 1);
+		ring4.color.Set(255, 255, 0, 1);
+		ring5.color.Set(255, 255, 0, 1);
+		ring6.color.Set(255, 255, 0, 1);
+		ring7.color.Set(255, 255, 0, 1);
+		ring8.color.Set(255, 255, 0, 1);
+		ring9.color.Set(255, 255, 0, 1);
+		ring10.color.Set(255, 255, 0, 1);
+		ring11.color.Set(255, 255, 0, 1);
+		ring12.color.Set(255, 255, 0, 1);
+		check1 = true;
+	}
+	if (body1 == Door2 || body2 == Door2) {
+		if (check1 == true) {
+			door2palo.color = White;
+			ring1.color = White;
+			ring2.color = White;
+			ring3.color = White;
+			ring4.color = White;
+			ring5.color = White;
+			ring6.color = White;
+			ring7.color = White;
+			ring8.color = White;
+			ring9.color = White;
+			ring10.color = White;
+			ring11.color = White;
+			ring12.color = White;
+			door4_1.color = Blue;
+			door4_2.color = Blue;
+			door4_3.color = Blue;
+			check2 = true;
+		}
+	}
+	if (body1 == Door3 || body2 == Door3) {
+		if (check2 == true) {
+			door4_1.color = White;
+			door4_2.color = White;
+			door4_3.color = White;
+			ring13.color.Set(255, 255, 0, 1);
+			ring14.color.Set(255, 255, 0, 1);
+			ring15.color.Set(255, 255, 0, 1);
+			ring16.color.Set(255, 255, 0, 1);
+			ring17.color.Set(255, 255, 0, 1);
+			ring18.color.Set(255, 255, 0, 1);
+			ring19.color.Set(255, 255, 0, 1);
+			ring20.color.Set(255, 255, 0, 1);
+			ring21.color.Set(255, 255, 0, 1);
+			ring22.color.Set(255, 255, 0, 1);
+			ring23.color.Set(255, 255, 0, 1);
+			ring24.color.Set(255, 255, 0, 1);
+			door5palo.color = Red;
+			check3 = true;
+		}
+	}
+	if (body1 == Door4 || body2 == Door4) {
+		if (check3 == true) {
+			ring13.color = White;
+			ring14.color = White;
+			ring15.color = White;
+			ring16.color = White;
+			ring17.color = White;
+			ring18.color = White;
+			ring19.color = White;
+			ring20.color = White;
+			ring21.color = White;
+			ring22.color = White;
+			ring23.color = White;
+			ring24.color = White;
+			door5palo.color = White;
+
+			door6_1.color = Red;
+			door6_2.color = Red;
+			door6_3.color = Red;
+			door6_4.color = Red;
+			check4 = true;
+		}
+	}
+
+	if (body1 == Door5 || body2 == Door5) {
+		if (check4 == true) {
+			door6_1.color = White;
+			door6_2.color = White;
+			door6_3.color = White;
+			door6_4.color = White;
+			door7_1.color = Blue;
+			door7_2.color = Blue;
+			door7_3.color = Blue;
+			check5 = true;
+		}
+	}
+	if (body1 == Door6 || body2 == Door6) {
+		if (check5 == true) {
+			door7_1.color = White;
+			door7_2.color = White;
+			door7_3.color = White;
+			end.color = Green;
+			check6 = true;
+		}
+	}
+	if (body1 == Door7 || body2 == Door7) {
+		if (check6 == true) {
+			end.color = White;
+			finished = true;
+		}
+	}
+	else LOG("Hit!");
+}
+
+void ModuleSceneIntro::Restart() {
+	timepassed = 0;
+	lost = false;
+	started = false;
+	finished = false;
+	finished2 = false;
+	check1 = false;
+	check2 = false;
+	check3 = false;
+	check4 = false;
+	check5 = false;
+	check6 = false;
+	checks1 = false;
+	checks2 = false;
+	checks3 = false;
+	checks4 = false;
+	checks5 = false;
+	checks6 = false;
+	door1l.color = White;
+	door1r.color = White;
+	start.color = Green;
+
+	door2palo.color = White;
+	ring1.color = White;
+	ring2.color = White;
+	ring3.color = White;
+	ring4.color = White;
+	ring5.color = White;
+	ring6.color = White;
+	ring7.color = White;
+	ring8.color = White;
+	ring9.color = White;
+	ring10.color = White;
+	ring11.color = White;
+	ring12.color = White;
+	door4_1.color = White;
+	door4_2.color = White;
+	door4_3.color = White;
+	ring13.color = White;
+	ring14.color = White;
+	ring15.color = White;
+	ring16.color = White;
+	ring17.color = White;
+	ring18.color = White;
+	ring19.color = White;
+	ring20.color = White;
+	ring21.color = White;
+	ring22.color = White;
+	ring23.color = White;
+	ring24.color = White;
+	door5palo.color = White;
+	door6_1.color = White;
+	door6_2.color = White;
+	door6_3.color = White;
+	door6_4.color = White;
+	door7_1.color = White;
+	door7_2.color = White;
+	door7_3.color = White;
+	end.color = White;
+
+	App->audio->CleanUp();
+	App->audio->Init();
+	victory = App->audio->LoadFx("Victory.wav");
+	musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_1_1_.wav");
+	wasted = App->audio->LoadFx("Wasted.wav");
+	checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
+	App->audio->PlayFx(musicc, -1);
+}
+
+
+void ModuleSceneIntro::CreateMap() {
 	start.radius = 7;
 	start.height = 1;
 	start.SetRotation(120, (0, 0, 2));
@@ -31,14 +364,14 @@ bool ModuleSceneIntro::Start()
 	door1l.height = 20;
 	door1l.SetRotation(120, (0, 0, 1));
 	door1l.SetPos(30, 10, -5);
-	door1l.color = Red;
+	door1l.color = White;
 	map[1] = App->physics->AddBody(door1l, 0.0f);
-	
+
 	door1r.radius = 0.5f;
 	door1r.height = 20;
 	door1r.SetRotation(120, (0, 0, 1));
 	door1r.SetPos(30, 10, 5);
-	door1r.color = Red;
+	door1r.color = White;
 	map[2] = App->physics->AddBody(door1r, 0.0f);
 
 	door2palo.radius = 0.5f;
@@ -118,7 +451,7 @@ bool ModuleSceneIntro::Start()
 	///////////////////RING 1 ///////////////
 
 	vec3 Ringbox(1, 1, 2);
-	
+
 	////radius////
 	ring1.size = Ringbox;
 	ring2.size = Ringbox;
@@ -134,7 +467,7 @@ bool ModuleSceneIntro::Start()
 	ring12.size = Ringbox;
 
 
-	
+
 	////Position////
 
 
@@ -235,24 +568,24 @@ bool ModuleSceneIntro::Start()
 	map[37] = App->physics->AddBody(ring22, 0.0f);
 	map[38] = App->physics->AddBody(ring23, 0.0f);
 	map[39] = App->physics->AddBody(ring24, 0.0f);
-	
+
 	end.radius = 7;
 	end.height = 1;
 	end.SetRotation(120, (0, 0, 2));
 	end.SetPos(60, 1, -60);
-	end.color = Green;
+	end.color = White;
 	map[40] = App->physics->AddBody(end, 0.0f);
 
 
 	Flooor.size = vec3(100, 0, 80);
 	Flooor.SetPos(40, 0.1f, -30);
 	map[14] = App->physics->AddBody(Flooor, 0.0f);
-	
-	
-	
+
+
+
 	/////////////////////////SENSORS////////////////////////////
-	
-	sensor1.size = vec3(0.1f,20,9);
+
+	sensor1.size = vec3(0.1f, 20, 9);
 	sensor1.SetPos(30, 10, 0);
 	Door1 = App->physics->AddBody(sensor1, 0.0f);
 	Door1->SetAsSensor(true);
@@ -264,7 +597,7 @@ bool ModuleSceneIntro::Start()
 	Door2 = App->physics->AddBody(sensor2, 0.0f);
 	Door2->SetAsSensor(true);
 	Door2->collision_listeners.add(this);
-	
+
 	sensor3.size = vec3(8, 7, 0.1f);
 	sensor3.SetPos(4, 3, -30);
 	Door3 = App->physics->AddBody(sensor3, 0.0f);
@@ -279,8 +612,6 @@ bool ModuleSceneIntro::Start()
 	Door4->collision_listeners.add(this);
 
 
-//	sensor->SetAsSensor(true);
-	//sensor->collision_listeners.add(this);
 	sensor5.size = vec3(8, 6, 0.1f);
 	sensor5.SetPos(50, 10, -20);
 	sensor5.color = Red;
@@ -303,274 +634,46 @@ bool ModuleSceneIntro::Start()
 	Door7->SetAsSensor(true);
 	Door7->collision_listeners.add(this);
 
-
-	victory = App->audio->LoadFx("Victory.wav");
-	musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_1_1_.wav");
-	
-	checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
-	App->audio->PlayFx(musicc, -1);
-	return ret;
 }
 
-// Load assets
-bool ModuleSceneIntro::CleanUp()
-{
-	LOG("Unloading Intro scene");
-
-	return true;
+void ModuleSceneIntro::Lost() {
+	door1l.color = White;
+	door1r.color = White;
+	door2palo.color = White;
+	ring1.color = White;
+	ring2.color = White;
+	ring3.color = White;
+	ring4.color = White;
+	ring5.color = White;
+	ring6.color = White;
+	ring7.color = White;
+	ring8.color = White;
+	ring9.color = White;
+	ring10.color = White;
+	ring11.color = White;
+	ring12.color = White;
+	door4_1.color = White;
+	door4_2.color = White;
+	door4_3.color = White;
+	ring13.color = White;
+	ring14.color = White;
+	ring15.color = White;
+	ring16.color = White;
+	ring17.color = White;
+	ring18.color = White;
+	ring19.color = White;
+	ring20.color = White;
+	ring21.color = White;
+	ring22.color = White;
+	ring23.color = White;
+	ring24.color = White;
+	door5palo.color = White;
+	door6_1.color = White;
+	door6_2.color = White;
+	door6_3.color = White;
+	door6_4.color = White;
+	door7_1.color = White;
+	door7_2.color = White;
+	door7_3.color = White;
+	end.color = White;
 }
-
-// Update
-update_status ModuleSceneIntro::Update(float dt)
-{
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	if (started == false) {
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		{
-			time = SDL_GetTicks();
-			started = true;
-		}
-	}
-	if (started == true && finished == false) {
-		timepassed = SDL_GetTicks() - time;
-	}
-	
-	if (finished == true && finished2 == false) {
-		finished2 = true;
-		App->audio->CleanUp();
-		App->audio->Init ();
-		victory = App->audio->LoadFx("Victory.wav");
-		App->audio->PlayFx(victory);
-	}
-
-	if (check1 == true && checks1 == false) {
-		App->audio->PlayFx(checkpoint);
-		checks1 = true;
-	}
-	if (check2 == true && checks2 == false) {
-		App->audio->PlayFx(checkpoint);
-		checks2 = true;
-	}
-	if (check3 == true && checks3 == false) {
-		App->audio->PlayFx(checkpoint);
-		checks3 = true;
-	}
-	if (check4 == true && checks4 == false) {
-		App->audio->PlayFx(checkpoint);
-		checks4 = true;
-	}
-	if (check5 == true && checks5 == false) {
-		App->audio->PlayFx(checkpoint);
-		checks5 = true;
-	}
-	if (check6 == true && checks6 == false) {
-		App->audio->PlayFx(checkpoint);
-		checks6 = true;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-	{
-		timepassed = 0;
-		started = false;
-		finished = false;
-		finished2 = false;
-		check1 = false;
-		check2 = false;
-		check3 = false;
-		check4 = false;
-		check5 = false;
-		check6 = false;
-		checks1 = false;
-		checks2 = false;
-		checks3 = false;
-		checks4 = false;
-		checks5 = false;
-		checks6 = false;
-		App->audio->CleanUp();
-		App->audio->Init();
-		victory = App->audio->LoadFx("Victory.wav");
-		musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_1_1_.wav");
-		checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
-		App->audio->PlayFx(musicc, -1);
-	}
-	//sensor->GetTransform(&s.transform);
-	//sensor1.Render();
-	//sensor3.Render();
-	//sensor6.Render();
-	sensor7.Render();
-	Flooor.Render();
-	door6_1.Render();
-	door6_2.Render();
-	door6_3.Render();
-	door6_4.Render();
-	start.Render();
-	door1l.Render();
-	door1r.Render();
-	door2palo.Render();
-	door5palo.Render();
-	door4_1.Render();
-	door4_2.Render();
-	door4_3.Render();
-	door7_1.Render();
-	door7_2.Render();
-	door7_3.Render();
-	end.Render();
-
-	/////////Ring Render/////////
-	ring1.Render();
-	ring2.Render();
-	ring3.Render();
-	ring4.Render();
-	ring5.Render();
-	ring6.Render();
-	ring7.Render();
-	ring8.Render();
-	ring9.Render();
-	ring10.Render();
-	ring11.Render();
-	ring12.Render();
-
-
-	/////////Ring 2 Render /////////
-	ring13.Render();
-	ring14.Render();
-	ring15.Render();
-	ring16.Render();
-	ring17.Render();
-	ring18.Render();
-	ring19.Render();
-	ring20.Render();
-	ring21.Render();
-	ring22.Render();
-	ring23.Render();
-	ring24.Render();
-
-	////////Ring Colour //////////
-
-	
-
-
-	char title[80];
-	sprintf_s(title, "%d Seconds", timepassed);
-	App->window->SetTitle(title);
-
-	return UPDATE_CONTINUE;
-}
-
-void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-{
-	if (body1 == Door1 || body2 == Door1) {
-		door2palo.color = Red;
-		door1l.color = White;
-		door1r.color = White;
-		ring1.color.Set(255, 255, 0,1);
-		ring2.color.Set(255, 255, 0, 1);
-		ring3.color.Set(255, 255, 0, 1);
-		ring4.color.Set(255, 255, 0, 1);
-		ring5.color.Set(255, 255, 0, 1);
-		ring6.color.Set(255, 255, 0, 1);
-		ring7.color.Set(255, 255, 0, 1);
-		ring8.color.Set(255, 255, 0, 1);
-		ring9.color.Set(255, 255, 0, 1);
-		ring10.color.Set(255, 255, 0, 1);
-		ring11.color.Set(255, 255, 0, 1);
-		ring12.color.Set(255, 255, 0, 1);
-		check1 = true;
-	}
-	if (body1 == Door2 || body2 == Door2) {
-		if (check1 == true) {
-			door2palo.color = White;
-			ring1.color = White;
-			ring2.color = White;
-			ring3.color = White;
-			ring4.color = White;
-			ring5.color = White;
-			ring6.color = White;
-			ring7.color = White;
-			ring8.color = White;
-			ring9.color = White;
-			ring10.color = White;
-			ring11.color = White;
-			ring12.color = White;
-			door4_1.color = Blue;
-			door4_2.color = Blue;
-			door4_3.color = Blue;
-			check2 = true;
-		}
-	}
-	if (body1 == Door3 || body2 == Door3) {
-		if (check2 == true) {
-			door4_1.color = White;
-			door4_2.color = White;
-			door4_3.color = White;
-			ring13.color.Set(255, 255, 0, 1);
-			ring14.color.Set(255, 255, 0, 1);
-			ring15.color.Set(255, 255, 0, 1);
-			ring16.color.Set(255, 255, 0, 1);
-			ring17.color.Set(255, 255, 0, 1);
-			ring18.color.Set(255, 255, 0, 1);
-			ring19.color.Set(255, 255, 0, 1);
-			ring20.color.Set(255, 255, 0, 1);
-			ring21.color.Set(255, 255, 0, 1);
-			ring22.color.Set(255, 255, 0, 1);
-			ring23.color.Set(255, 255, 0, 1);
-			ring24.color.Set(255, 255, 0, 1);
-			door5palo.color = Red;
-			check3 = true;
-		}
-	}
-	if (body1 == Door4 || body2 == Door4) {
-		if (check3 == true) {
-			ring13.color = White;
-			ring14.color = White;
-			ring15.color = White;
-			ring16.color = White;
-			ring17.color = White;
-			ring18.color = White;
-			ring19.color = White;
-			ring20.color = White;
-			ring21.color = White;
-			ring22.color = White;
-			ring23.color = White;
-			ring24.color = White;
-			door5palo.color = White;
-
-			door6_1.color.Set(222, 76, 138, 0.5f);
-			door6_2.color.Set(222, 76, 138, 0.5f);
-			door6_3.color.Set(222, 76, 138, 0.5f);
-			door6_4.color.Set(222, 76, 138, 0.5f);
-			check4 = true;
-		}
-	}
-
-	if (body1 == Door5 || body2 == Door5) {
-		if (check4 == true) {
-			door6_1.color = White;
-			door6_2.color = White;
-			door6_3.color = White;
-			door6_4.color = White;
-			door7_1.color = Blue;
-			door7_2.color = Blue;
-			door7_3.color = Blue;
-			check5 = true;
-		}
-	}
-	if (body1 == Door6 || body2 == Door6) {
-		if (check5 == true) {
-			door7_1.color = White;
-			door7_2.color = White;
-			door7_3.color = White;
-
-			check6 = true;
-		}
-	}
-	if (body1 == Door7 || body2 == Door7) {
-		if (check6 == true) {
-			end.color = White;
-			finished = true;
-		}
-	}
-	else LOG("Hit!");
-}
-

@@ -37,8 +37,14 @@ public:
 	PhysBody3D* Door7;
 	PhysBody3D* sensor;
 	uint victory, musicc, checkpoint;
-	uint time = 0, timepassed = 0;
+	uint wasted;
+	uint time = 0;
+	float timepassed = 0;
 	bool started = false, finished = false, finished2 = false;
 	bool check1 = false, check2 = false, check3 = false, check4 = false, check5 = false, check6 = false;
 	bool checks1 = false, checks2 = false, checks3 = false , checks4 = false , checks5 = false , checks6 = false;
+	bool lost = false;
+	void Restart();
+	void CreateMap();
+	void Lost();
 };
