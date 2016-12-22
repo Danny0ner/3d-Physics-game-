@@ -305,7 +305,7 @@ bool ModuleSceneIntro::Start()
 
 
 	victory = App->audio->LoadFx("Victory.wav");
-	musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_.wav");
+	musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_1_1_.wav");
 	
 	checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
 	App->audio->PlayFx(musicc, -1);
@@ -341,9 +341,32 @@ update_status ModuleSceneIntro::Update(float dt)
 		App->audio->CleanUp();
 		App->audio->Init ();
 		victory = App->audio->LoadFx("Victory.wav");
-		musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_.wav");
-		checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
 		App->audio->PlayFx(victory);
+	}
+
+	if (check1 == true && checks1 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks1 = true;
+	}
+	if (check2 == true && checks2 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks2 = true;
+	}
+	if (check3 == true && checks3 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks3 = true;
+	}
+	if (check4 == true && checks4 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks4 = true;
+	}
+	if (check5 == true && checks5 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks5 = true;
+	}
+	if (check6 == true && checks6 == false) {
+		App->audio->PlayFx(checkpoint);
+		checks6 = true;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
@@ -358,7 +381,18 @@ update_status ModuleSceneIntro::Update(float dt)
 		check4 = false;
 		check5 = false;
 		check6 = false;
-		
+		checks1 = false;
+		checks2 = false;
+		checks3 = false;
+		checks4 = false;
+		checks5 = false;
+		checks6 = false;
+		App->audio->CleanUp();
+		App->audio->Init();
+		victory = App->audio->LoadFx("Victory.wav");
+		musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_1_1_.wav");
+		checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
+		App->audio->PlayFx(musicc, -1);
 	}
 	//sensor->GetTransform(&s.transform);
 	//sensor1.Render();
