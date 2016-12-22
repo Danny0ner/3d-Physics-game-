@@ -237,23 +237,26 @@ bool ModuleSceneIntro::Start()
 	map[39] = App->physics->AddBody(ring24, 0.0f);
 	
 
-
-
-
-
-
 	Flooor.size = vec3(120, 0, 100);
 	Flooor.SetPos(50, 0.1f, -40);
 	map[14] = App->physics->AddBody(Flooor, 0.0f);
-	sensor1.size = vec3(1,5,5);
-	sensor1.SetPos(20, 13, 1);
-	sensoraro1 = App->physics->AddBody(sensor1, 0.0f);
-	sensoraro1->SetAsSensor(true);
-	sensoraro1->collision_listeners.add(this);
+	/////////////////////////SENSORS////////////////////////////
+	sensor1.size = vec3(1,20,9);
+	sensor1.SetPos(30, 10, 0);
 
-	sensor = App->physics->AddBody(s, 0.0f);
-	sensor->SetAsSensor(true);
-	sensor->collision_listeners.add(this);
+	Door1 = App->physics->AddBody(sensor1, 0.0f);
+	Door1->SetAsSensor(true);
+	Door1->collision_listeners.add(this);
+	sensor2.height = 1;
+	sensor2.radius = 4;
+	sensor2.SetPos(70, 24, 0);
+	Door2 = App->physics->AddBody(sensor2, 0.0f);
+	Door2->SetAsSensor(true);
+	Door2->collision_listeners.add(this);
+
+
+//	sensor->SetAsSensor(true);
+	//sensor->collision_listeners.add(this);
 	
 
 	return ret;
@@ -274,10 +277,9 @@ update_status ModuleSceneIntro::Update(float dt)
 	p.axis = true;
 	p.Render();
 
-	sensor->GetTransform(&s.transform);
-	sensoraro1->GetTransform(&sensor1.transform);
+	//sensor->GetTransform(&s.transform);
+	//sensor1.Render();
 	
-	s.Render();
 	Flooor.Render();
 	door6_1.Render();
 	door6_2.Render();
@@ -337,8 +339,38 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	if (body1 == sensoraro1) {
+	if (body1 == Door1 || body2 == Door1) {
 		LOG("Hit Aro!");
+		door2palo.color = Red;
+		door1l.color = White;
+		door1r.color = White;
+		ring1.color.Set(255, 255, 0,1);
+		ring2.color.Set(255, 255, 0, 1);
+		ring3.color.Set(255, 255, 0, 1);
+		ring4.color.Set(255, 255, 0, 1);
+		ring5.color.Set(255, 255, 0, 1);
+		ring6.color.Set(255, 255, 0, 1);
+		ring7.color.Set(255, 255, 0, 1);
+		ring8.color.Set(255, 255, 0, 1);
+		ring9.color.Set(255, 255, 0, 1);
+		ring10.color.Set(255, 255, 0, 1);
+		ring11.color.Set(255, 255, 0, 1);
+		ring12.color.Set(255, 255, 0, 1);
+	}
+	if (body1 == Door2 || body2 == Door2) {
+		door2palo.color = White;
+		ring1.color = White;
+		ring2.color = White;
+		ring3.color = White;
+		ring4.color = White;
+		ring5.color = White;
+		ring6.color = White;
+		ring7.color = White;
+		ring8.color = White;
+		ring9.color = White;
+		ring10.color = White;
+		ring11.color = White;
+		ring12.color = White;
 	}
 	else LOG("Hit!");
 }
