@@ -31,11 +31,11 @@ bool ModulePlayer::Start()
 	car.chassis_size[4].Set(0.3f, 1.0f, 0.3f);
 
 	car.chassis_offset = new vec3[car.num_chassis];
-	car.chassis_offset[0].Set(0, 1, 0);
-	car.chassis_offset[1].Set(1.1, 1.5f, -1.1);
-	car.chassis_offset[2].Set(-1.1, 1.5f, 1.1);
-	car.chassis_offset[3].Set(-1.1, 1.5f, -1.1);
-	car.chassis_offset[4].Set(1.1, 1.5f, 1.1);
+	car.chassis_offset[0].Set(0, 0, 0);
+	car.chassis_offset[1].Set(1.1, 0.5f, -1.1);
+	car.chassis_offset[2].Set(-1.1, 0.5f, 1.1);
+	car.chassis_offset[3].Set(-1.1, 0.5f, -1.1);
+	car.chassis_offset[4].Set(1.1, 0.5f, 1.1);
 	car.chassis_color = new vec3[car.num_chassis];
 	car.chassis_color[0] = { Blue.r, Blue.g, Blue.b };
 	car.chassis_color[1] = { Blue.r, Blue.g, Blue.b };
@@ -97,10 +97,10 @@ bool ModulePlayer::Start()
 	Helix3.color = White;
 	Helix4.color = White;
 
-	btVector3 H_u_i(-0.1, 1.1f, 1.1f);
-	btVector3 H_u_d(-0.1, -1.1f, 1.1f);
-	btVector3 H_d_i(-0.1, -1.1f, -1.1f);
-	btVector3 H_d_d(-0.1, 1.1f, -1.1f);
+	btVector3 H_u_i(0.9, 1.1f, 1.1f);
+	btVector3 H_u_d(0.9, -1.1f, 1.1f);
+	btVector3 H_d_i(0.9, -1.1f, -1.1f);
+	btVector3 H_d_d(0.9, 1.1f, -1.1f);
 
 	btVector3 helix2(0, 2, 0);
 	btVector3 helix3(0, 1, 0);

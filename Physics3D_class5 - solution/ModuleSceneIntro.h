@@ -39,6 +39,7 @@ public:
 	uint victory, musicc, checkpoint;
 	uint wasted;
 	uint time = 0;
+	bool youlost = false;
 	float timepassed = 0;
 	bool started = false, finished = false, finished2 = false;
 	bool check1 = false, check2 = false, check3 = false, check4 = false, check5 = false, check6 = false;

@@ -44,10 +44,10 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
-	if (timepassed >= 60000) {
+	if (timepassed >= 60000 && youlost == false) {
 		lost = true;
-		App->audio->PlayFx(wasted);
 		Lost();
+		youlost = true;
 	}
 
 	if (started == false) {
@@ -101,11 +101,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 		Restart();
 	}
-	//sensor->GetTransform(&s.transform);
-	//sensor1.Render();
-	//sensor3.Render();
-	//sensor6.Render();
-	sensor7.Render();
+
 	Flooor.Render();
 	door6_1.Render();
 	door6_2.Render();
@@ -282,6 +278,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 }
 
 void ModuleSceneIntro::Restart() {
+	youlost = false;
 	timepassed = 0;
 	lost = false;
 	started = false;
@@ -637,6 +634,13 @@ void ModuleSceneIntro::CreateMap() {
 }
 
 void ModuleSceneIntro::Lost() {
+	App->audio->CleanUp();
+	App->audio->Init();
+	victory = App->audio->LoadFx("Victory.wav");
+	musicc = App->audio->LoadFx("Undertale_-_Bonetrousle_1_1_1_1_.wav");
+	wasted = App->audio->LoadFx("Wasted.wav");
+	checkpoint = App->audio->LoadFx("Sonic_Ring_Sound.wav");
+	App->audio->PlayFx(wasted);
 	door1l.color = White;
 	door1r.color = White;
 	door2palo.color = White;
