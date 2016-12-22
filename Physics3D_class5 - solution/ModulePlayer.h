@@ -53,4 +53,21 @@ public:
 	PhysBody3D* cc2;
 	PhysBody3D* cc3;
 	PhysBody3D* cc4;
+
+
+
+
+	Cylinder Helix1;
+	Cylinder Helix2;
+	Cylinder Helix3;
+	Cylinder Helix4;
+
+	PhysBody3D* h1;
+	PhysBody3D* h2;
+	PhysBody3D* h3;
+	PhysBody3D* h4;
+	btHingeConstraint* Motor;
+	btHingeConstraint* Motor2;
+	btHingeConstraint* Motor3;
+	btHingeConstraint* Motor4;
 };

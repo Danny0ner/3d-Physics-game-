@@ -25,17 +25,17 @@ bool ModulePlayer::Start()
 	car.num_chassis = 5;
 	car.chassis_size = new vec3[car.num_chassis];
 	car.chassis_size[0].Set(2, 0.7f, 2);
-	car.chassis_size[1].Set(0.5f, 0.7f, 1);
-	car.chassis_size[2].Set(0.5f, 0.7f, 1);
-	car.chassis_size[3].Set(0.5f, 0.7f, 1);
-	car.chassis_size[4].Set(0.5f, 0.7f, 1);
+	car.chassis_size[1].Set(0.3f, 1.0f, 0.3f);
+	car.chassis_size[2].Set(0.3f, 1.0f, 0.3f);
+	car.chassis_size[3].Set(0.3f, 1.0f, 0.3f);
+	car.chassis_size[4].Set(0.3f, 1.0f, 0.3f);
 
 	car.chassis_offset = new vec3[car.num_chassis];
-	car.chassis_offset[0].Set(0, 0, 0);
-	car.chassis_offset[1].Set(1, 0, -1);
-	car.chassis_offset[2].Set(-1, 0, 1);
-	car.chassis_offset[3].Set(-1, 0, -1);
-	car.chassis_offset[4].Set(1, 0, 1);
+	car.chassis_offset[0].Set(0, 1, 0);
+	car.chassis_offset[1].Set(1.1, 1.5f, -1.1);
+	car.chassis_offset[2].Set(-1.1, 1.5f, 1.1);
+	car.chassis_offset[3].Set(-1.1, 1.5f, -1.1);
+	car.chassis_offset[4].Set(1.1, 1.5f, 1.1);
 	car.chassis_color = new vec3[car.num_chassis];
 	car.chassis_color[0] = { Blue.r, Blue.g, Blue.b };
 	car.chassis_color[1] = { Blue.r, Blue.g, Blue.b };
@@ -59,8 +59,8 @@ bool ModulePlayer::Start()
 
 	// Don't change anything below this line ------------------
 
-	float half_width = 3* 0.5f;
-	float half_length = 3*0.5f;
+	float half_width = 3 * 0.5f;
+	float half_length = 3 * 0.5f;
 
 	vec3 direction(0, 1, 0);
 	vec3 axis(-1, 0, 0);
@@ -126,22 +126,45 @@ bool ModulePlayer::Start()
 	vehicle->SetPos(0, 1, 0);
 
 	/////////////////////////// helices//////////////////
-	c1.height = 0.01f;
-	c1.radius = 1;
-	c2.height = 0.01f;
-	c2.radius = 1;
-	c3.height = 0.01f;
-	c3.radius = 1;
-	c4.height = 0.01f;
-	c4.radius = 1;
-	c1.color = Red;
+	Helix1.height = 0.01f;
+	Helix1.radius = 0.7;
+	h1 = App->physics->AddBody(Helix1, 0.0001);
+	Helix1.SetRotation(90, { 1,0,0 });
 
-	btVector3 helix(0, -1, 0);
+	Helix2.height = 0.01f;
+	Helix2.radius = 0.7;
+	h2 = App->physics->AddBody(Helix2, 0.0001);
+
+	Helix3.height = 0.01f;
+	Helix3.radius = 0.7;
+	h3 = App->physics->AddBody(Helix3, 0.0001);
+	Helix4.height = 0.01f;
+	Helix4.radius = 0.7;
+	h4 = App->physics->AddBody(Helix4, 0.0001);
+	Helix1.color = White;
+	Helix2.color = White;
+	Helix3.color = White;
+	Helix4.color = White;
+
+	btVector3 H_u_i(-0.1, 1.1f, 1.1f);
+	btVector3 H_u_d(-0.1, -1.1f, 1.1f);
+	btVector3 H_d_i(-0.1, -1.1f, -1.1f);
+	btVector3 H_d_d(-0.1, 1.1f, -1.1f);
+
 	btVector3 helix2(0, 2, 0);
 	btVector3 helix3(0, 1, 0);
-	//cc1 = App->physics->AddBody(c1, 0.1f);
-	//App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *cc1->GetRigidBody(), helix2, helix, helix3, helix3, false);
+	btVector3 helix4(1, 0, 0);
+	Motor = App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *h1->GetRigidBody(), helix2, H_u_i, helix3, helix4, true);
+	Motor2 = App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *h2->GetRigidBody(), helix2, H_u_d, helix3, helix4, true);
+	Motor3 = App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *h3->GetRigidBody(), helix2, H_d_i, helix3, helix4, true);
+	Motor4 = App->physics->Add_Hinge_Constraint(*vehicle->GetRigidBody(), *h4->GetRigidBody(), helix2, H_d_d, helix3, helix4, true);
+	Motor->setLimit(0, 0);
+	Motor2->setLimit(0, 0);
+	Motor3->setLimit(0, 0);
+	Motor4->setLimit(0, 0);
+
 	return true;
+
 }
 
 // Unload assets
@@ -166,6 +189,15 @@ update_status ModulePlayer::Update(float dt)
 	vec3 AirFriction;
 	vec3 AirFric;
 	btScalar frontRotx, frontRoty, frontRotz, backRotx, backRoty, backRotz;
+
+	h1->GetTransform(&Helix1.transform);
+	Helix1.Render();
+	h2->GetTransform(&Helix2.transform);
+	Helix2.Render();
+	h3->GetTransform(&Helix3.transform);
+	Helix3.Render();
+	h4->GetTransform(&Helix4.transform);
+	Helix4.Render();
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
